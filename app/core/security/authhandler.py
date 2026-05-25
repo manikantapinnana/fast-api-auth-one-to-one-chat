@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from app.core.config import SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES
 from app.core.database import get_db
 from app.db.repository.userRepo import UserRepository
-from app.db.schemas.user import TokenData
+from app.db.schemas.user import TokenData, UserInResponse
 
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
@@ -35,7 +35,7 @@ def decode_access_token(token: str) -> TokenData:
         ) from exc
 
 
-def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)) -> UserInResponse:
     token_data = decode_access_token(token)
     if not token_data.email:
         raise HTTPException(

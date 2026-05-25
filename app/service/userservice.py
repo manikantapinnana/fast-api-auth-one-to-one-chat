@@ -75,3 +75,9 @@ class UserService:
     def get_all_users(self) -> list[UserInResponse]:
         users = self.__userRepository.get_all_users()
         return users
+
+    def upload_file_for_user(self, user_id: int, file) -> dict:
+        # Placeholder for file upload logic
+        with open(f"user_{user_id}_file", "wb") as f:
+            f.write(file.file.read())
+        return {"message": "File uploaded successfully"}
